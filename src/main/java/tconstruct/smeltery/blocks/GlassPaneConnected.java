@@ -43,8 +43,7 @@ public class GlassPaneConnected extends GlassBlockConnected
         }
     }
 
-    @Override
-    public IIcon getConnectedBlockTexture (IBlockAccess world, int x, int y, int z, int side, IIcon[] icons)
+    public IIcon getConnectedPaneTexture (IBlockAccess world, int x, int y, int z, int side, boolean leftSide)
     {
         if (side == 0 || side == 1)
         {
@@ -56,338 +55,142 @@ public class GlassPaneConnected extends GlassBlockConnected
             return icons[0];
         }
 
-        boolean isOpenUp = false, isOpenDown = false, isOpenLeft = false, isOpenRight = false;
+        boolean hasDown, hasUp, hasNorth, hasSouth, hasWest, hasEast;
+        boolean hasSide, hasOtherSide, hasFront, hasBack;
+        ForgeDirection checkDirection;
+        
+        hasDown = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z));
+        hasUp = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y + 1, z), world.getBlockMetadata(x, y + 1, z));
+        hasNorth = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z - 1), world.getBlockMetadata(x, y, z - 1));
+        hasSouth = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z + 1), world.getBlockMetadata(x, y, z + 1));
+        hasWest = shouldConnectToBlock(world, x, y, z, world.getBlock(x - 1, y, z), world.getBlockMetadata(x - 1, y, z));
+        hasEast = shouldConnectToBlock(world, x, y, z, world.getBlock(x + 1, y, z), world.getBlockMetadata(x + 1, y, z));
 
         switch (side)
         {
-        case 2:
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z)))
+        case 2: // North
+            hasFront = hasNorth;
+            hasBack = hasSouth;
+
+            if (leftSide)
             {
-                isOpenDown = true;
+                hasSide = hasEast;
+                hasOtherSide = hasWest;
+                checkDirection = ForgeDirection.EAST;
+            }
+            else
+            {
+                hasSide = hasWest;
+                hasOtherSide = hasEast;
+                checkDirection = ForgeDirection.WEST;
             }
 
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y + 1, z), world.getBlockMetadata(x, y + 1, z)))
-            {
-                isOpenUp = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x - 1, y, z), world.getBlockMetadata(x - 1, y, z)))
-            {
-                isOpenLeft = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x + 1, y, z), world.getBlockMetadata(x + 1, y, z)))
-            {
-                isOpenRight = true;
-            }
-
-            if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[15];
-            }
-            else if (isOpenUp && isOpenDown && isOpenLeft)
-            {
-                return icons[13];
-            }
-            else if (isOpenUp && isOpenDown && isOpenRight)
-            {
-                return icons[14];
-            }
-            else if (isOpenUp && isOpenLeft && isOpenRight)
-            {
-                return icons[11];
-            }
-            else if (isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[12];
-            }
-            else if (isOpenDown && isOpenUp)
-            {
-                return icons[6];
-            }
-            else if (isOpenLeft && isOpenRight)
-            {
-                return icons[5];
-            }
-            else if (isOpenDown && isOpenLeft)
-            {
-                return icons[9];
-            }
-            else if (isOpenDown && isOpenRight)
-            {
-                return icons[10];
-            }
-            else if (isOpenUp && isOpenLeft)
-            {
-                return icons[7];
-            }
-            else if (isOpenUp && isOpenRight)
-            {
-                return icons[8];
-            }
-            else if (isOpenDown)
-            {
-                return icons[1];
-            }
-            else if (isOpenUp)
-            {
-                return icons[2];
-            }
-            else if (isOpenLeft)
-            {
-                return icons[4];
-            }
-            else if (isOpenRight)
-            {
-                return icons[3];
-            }
             break;
-        case 3:
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z)))
+        case 3: // South
+            hasFront = hasSouth;
+            hasBack = hasNorth;
+
+            if (leftSide)
             {
-                isOpenDown = true;
+                hasSide = hasWest;
+                hasOtherSide = hasEast;
+                checkDirection = ForgeDirection.WEST;
+            }
+            else
+            {
+                hasSide = hasEast;
+                hasOtherSide = hasWest;
+                checkDirection = ForgeDirection.EAST;
             }
 
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y + 1, z), world.getBlockMetadata(x, y + 1, z)))
-            {
-                isOpenUp = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x - 1, y, z), world.getBlockMetadata(x - 1, y, z)))
-            {
-                isOpenLeft = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x + 1, y, z), world.getBlockMetadata(x + 1, y, z)))
-            {
-                isOpenRight = true;
-            }
-
-            if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[15];
-            }
-            else if (isOpenUp && isOpenDown && isOpenLeft)
-            {
-                return icons[14];
-            }
-            else if (isOpenUp && isOpenDown && isOpenRight)
-            {
-                return icons[13];
-            }
-            else if (isOpenUp && isOpenLeft && isOpenRight)
-            {
-                return icons[11];
-            }
-            else if (isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[12];
-            }
-            else if (isOpenDown && isOpenUp)
-            {
-                return icons[6];
-            }
-            else if (isOpenLeft && isOpenRight)
-            {
-                return icons[5];
-            }
-            else if (isOpenDown && isOpenLeft)
-            {
-                return icons[10];
-            }
-            else if (isOpenDown && isOpenRight)
-            {
-                return icons[9];
-            }
-            else if (isOpenUp && isOpenLeft)
-            {
-                return icons[8];
-            }
-            else if (isOpenUp && isOpenRight)
-            {
-                return icons[7];
-            }
-            else if (isOpenDown)
-            {
-                return icons[1];
-            }
-            else if (isOpenUp)
-            {
-                return icons[2];
-            }
-            else if (isOpenLeft)
-            {
-                return icons[3];
-            }
-            else if (isOpenRight)
-            {
-                return icons[4];
-            }
             break;
-        case 4:
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z)))
+        case 4: // West
+            hasFront = hasWest;
+            hasBack = hasEast;
+
+            if (leftSide)
             {
-                isOpenDown = true;
+                hasSide = hasNorth;
+                hasOtherSide = hasSouth;
+                checkDirection = ForgeDirection.NORTH;
+            }
+            else
+            {
+                hasSide = hasSouth;
+                hasOtherSide = hasNorth;
+                checkDirection = ForgeDirection.SOUTH;
             }
 
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y + 1, z), world.getBlockMetadata(x, y + 1, z)))
-            {
-                isOpenUp = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z - 1), world.getBlockMetadata(x, y, z - 1)))
-            {
-                isOpenLeft = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z + 1), world.getBlockMetadata(x, y, z + 1)))
-            {
-                isOpenRight = true;
-            }
-
-            if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[15];
-            }
-            else if (isOpenUp && isOpenDown && isOpenLeft)
-            {
-                return icons[14];
-            }
-            else if (isOpenUp && isOpenDown && isOpenRight)
-            {
-                return icons[13];
-            }
-            else if (isOpenUp && isOpenLeft && isOpenRight)
-            {
-                return icons[11];
-            }
-            else if (isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[12];
-            }
-            else if (isOpenDown && isOpenUp)
-            {
-                return icons[6];
-            }
-            else if (isOpenLeft && isOpenRight)
-            {
-                return icons[5];
-            }
-            else if (isOpenDown && isOpenLeft)
-            {
-                return icons[10];
-            }
-            else if (isOpenDown && isOpenRight)
-            {
-                return icons[9];
-            }
-            else if (isOpenUp && isOpenLeft)
-            {
-                return icons[8];
-            }
-            else if (isOpenUp && isOpenRight)
-            {
-                return icons[7];
-            }
-            else if (isOpenDown)
-            {
-                return icons[1];
-            }
-            else if (isOpenUp)
-            {
-                return icons[2];
-            }
-            else if (isOpenLeft)
-            {
-                return icons[3];
-            }
-            else if (isOpenRight)
-            {
-                return icons[4];
-            }
             break;
-        case 5:
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z)))
+        case 5: // East
+            hasFront = hasEast;
+            hasBack = hasWest;
+
+            if (leftSide)
             {
-                isOpenDown = true;
+                hasSide = hasSouth;
+                hasOtherSide = hasNorth;
+                checkDirection = ForgeDirection.SOUTH;
+            }
+            else
+            {
+                hasSide = hasNorth;
+                hasOtherSide = hasSouth;
+                checkDirection = ForgeDirection.NORTH;
             }
 
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y + 1, z), world.getBlockMetadata(x, y + 1, z)))
-            {
-                isOpenUp = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z - 1), world.getBlockMetadata(x, y, z - 1)))
-            {
-                isOpenLeft = true;
-            }
-
-            if (shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z + 1), world.getBlockMetadata(x, y, z + 1)))
-            {
-                isOpenRight = true;
-            }
-
-            if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[15];
-            }
-            else if (isOpenUp && isOpenDown && isOpenLeft)
-            {
-                return icons[13];
-            }
-            else if (isOpenUp && isOpenDown && isOpenRight)
-            {
-                return icons[14];
-            }
-            else if (isOpenUp && isOpenLeft && isOpenRight)
-            {
-                return icons[11];
-            }
-            else if (isOpenDown && isOpenLeft && isOpenRight)
-            {
-                return icons[12];
-            }
-            else if (isOpenDown && isOpenUp)
-            {
-                return icons[6];
-            }
-            else if (isOpenLeft && isOpenRight)
-            {
-                return icons[5];
-            }
-            else if (isOpenDown && isOpenLeft)
-            {
-                return icons[9];
-            }
-            else if (isOpenDown && isOpenRight)
-            {
-                return icons[10];
-            }
-            else if (isOpenUp && isOpenLeft)
-            {
-                return icons[7];
-            }
-            else if (isOpenUp && isOpenRight)
-            {
-                return icons[8];
-            }
-            else if (isOpenDown)
-            {
-                return icons[1];
-            }
-            else if (isOpenUp)
-            {
-                return icons[2];
-            }
-            else if (isOpenLeft)
-            {
-                return icons[4];
-            }
-            else if (isOpenRight)
-            {
-                return icons[3];
-            }
             break;
+        default:
+            return icons[0];
+        }
+
+        if (hasOtherSide && !hasFront && !hasSide && !canPaneConnectTo(world, x, y, z, checkDirection))
+        {
+            return icons[4];
+        }
+        
+        if (hasDown)
+        {
+            hasDown = canPaneConnectTo(world, x, y - 1, z, checkDirection);
+        }
+        if (hasUp)
+        {
+            hasUp = canPaneConnectTo(world, x, y + 1, z, checkDirection);
+        }
+        
+        if (hasUp && hasSide && hasDown)
+        {
+            return icons[6];
+        }
+        
+        if (hasUp && hasSide)
+        {
+            return icons[3];
+        }
+        
+        if (hasSide && hasDown)
+        {
+            return icons[1];
+        }
+        
+        if (hasUp && hasDown)
+        {
+            return icons[2];
+        }
+        
+        if (hasSide)
+        {
+            return icons[5];
+        }
+        
+        if (hasDown)
+        {
+            return icons[7];
+        }
+        
+        if (hasUp)
+        {
+            return icons[8];
         }
 
         return icons[0];
@@ -508,8 +311,17 @@ public class GlassPaneConnected extends GlassBlockConnected
     @Override
     public void registerBlockIcons (IIconRegister par1IconRegister)
     {
-        super.registerBlockIcons(par1IconRegister);
-        this.theIcon = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_side");
+        icons[0] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_udl");
+        icons[1] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_u");
+        icons[2] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_l");
+        icons[3] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_d");
+        icons[4] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_r");
+        icons[5] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_ud");
+        icons[6] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_n");
+        icons[7] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_ul");
+        icons[8] = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_dl");
+        
+        theIcon = par1IconRegister.registerIcon("tinker:glass/" + folder + "test/glass_side");
     }
 
     public boolean canPaneConnectTo (IBlockAccess access, int x, int y, int z, ForgeDirection dir)
