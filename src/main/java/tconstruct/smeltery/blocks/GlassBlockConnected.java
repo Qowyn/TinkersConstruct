@@ -112,8 +112,8 @@ public class GlassBlockConnected extends MantleBlock
             break;
         case 1: // Up
             hasSide = leftSide ? hasEast : hasWest;
-            hasUp = hasNorth;
-            hasDown = hasSouth;
+            hasUp = hasSouth;
+            hasDown = hasNorth;
             
             break;
         case 2: // North

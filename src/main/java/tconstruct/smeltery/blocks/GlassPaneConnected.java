@@ -17,7 +17,7 @@ import tconstruct.util.config.PHConstruct;
 public class GlassPaneConnected extends GlassBlockConnected
 {
 
-    protected IIcon[] icons = new IIcon[10];
+    protected IIcon[] icons = new IIcon[9];
 
     public GlassPaneConnected(String location, boolean hasAlpha)
     {
@@ -34,10 +34,10 @@ public class GlassPaneConnected extends GlassBlockConnected
     public IIcon getConnectedPaneTexture (IBlockAccess world, int x, int y, int z, int side, boolean leftSide, int meta)
     {
         IIcon[] icons = getTextures(meta);
-        
+
         if (side == 0 || side == 1)
         {
-            return getSideTextureIndex(meta);
+            return getSideTexture(meta);
         }
 
         if (PHConstruct.connectedTexturesMode == 0)
@@ -48,7 +48,7 @@ public class GlassPaneConnected extends GlassBlockConnected
         boolean hasDown, hasUp, hasNorth, hasSouth, hasWest, hasEast;
         boolean hasSide, hasOtherSide, hasFront;
         ForgeDirection checkDirection;
-        
+
         hasDown = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z));
         hasUp = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y + 1, z), world.getBlockMetadata(x, y + 1, z));
         hasNorth = shouldConnectToBlock(world, x, y, z, world.getBlock(x, y, z - 1), world.getBlockMetadata(x, y, z - 1));
@@ -130,11 +130,11 @@ public class GlassPaneConnected extends GlassBlockConnected
             return icons[0];
         }
 
-        if (hasOtherSide && !hasFront && !hasSide && !canPaneConnectTo(world, x, y, z, checkDirection))
+        if ((hasOtherSide || canPaneConnectTo(world, x, y, z, checkDirection.getOpposite())) && !hasFront && !hasSide && !canPaneConnectTo(world, x, y, z, checkDirection))
         {
-            return icons[4];
+            return icons[8];
         }
-        
+
         if (hasDown)
         {
             hasDown = canPaneConnectTo(world, x, y - 1, z, checkDirection);
@@ -143,40 +143,40 @@ public class GlassPaneConnected extends GlassBlockConnected
         {
             hasUp = canPaneConnectTo(world, x, y + 1, z, checkDirection);
         }
-        
+
         if (hasUp && hasSide && hasDown)
         {
-            return icons[6];
+            return icons[5];
         }
-        
+
         if (hasUp && hasSide)
         {
             return icons[3];
         }
-        
+
         if (hasSide && hasDown)
         {
             return icons[1];
         }
-        
+
         if (hasUp && hasDown)
         {
             return icons[2];
         }
-        
+
         if (hasSide)
         {
-            return icons[5];
+            return icons[4];
         }
-        
+
         if (hasDown)
         {
-            return icons[7];
+            return icons[6];
         }
-        
+
         if (hasUp)
         {
-            return icons[8];
+            return icons[7];
         }
 
         return icons[0];
@@ -284,19 +284,19 @@ public class GlassPaneConnected extends GlassBlockConnected
         this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
     }
 
-    public IIcon getSideTextureIndex (int meta)
+    public IIcon getSideTexture (int meta)
     {
-        return this.icons[9];
+        return this.icons[8];
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon (int par1, int par2)
     {
-        return par1 > 3 ? icons[0] : icons[9];
+        return par1 > 3 ? icons[0] : icons[8];
     }
-    
-    public IIcon[] getTextures(int meta)
+
+    public IIcon[] getTextures (int meta)
     {
         return icons;
     }
@@ -313,12 +313,11 @@ public class GlassPaneConnected extends GlassBlockConnected
         icons[1] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_u");
         icons[2] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_s");
         icons[3] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_d");
-        icons[4] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_os");
-        icons[5] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_ud");
-        icons[6] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_n");
-        icons[7] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_us");
-        icons[8] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_ds");
-        icons[9] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_side");
+        icons[4] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_ud");
+        icons[5] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_n");
+        icons[6] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_us");
+        icons[7] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_ds");
+        icons[8] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/glass_side");
     }
 
     public boolean canPaneConnectTo (IBlockAccess access, int x, int y, int z, ForgeDirection dir)

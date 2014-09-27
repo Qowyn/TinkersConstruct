@@ -23,7 +23,7 @@ public class GlassConnectedRenderer implements ISimpleBlockRenderingHandler
     public void renderInventoryBlock (Block block, int metadata, int modelID, RenderBlocks renderer)
     {
         Tessellator tessellator = Tessellator.instance;
-        
+
         block.setBlockBoundsForItemRender();
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -59,7 +59,7 @@ public class GlassConnectedRenderer implements ISimpleBlockRenderingHandler
     public boolean renderWorldBlock (IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
         GlassBlockConnected glass = (GlassBlockConnected) block;
-        
+
         int meta = world.getBlockMetadata(x, y, z);
 
         // Connection state
@@ -89,111 +89,111 @@ public class GlassConnectedRenderer implements ISimpleBlockRenderingHandler
         }
 
         tessellator.setColorOpaque_F(r, g, b);
-        
+
         double halfU;
         IIcon left, right;
-        
+
         if (!connectionDown)
         {
             left = glass.getConnectedBlockTexture(world, x, y, z, 0, true, meta);
             right = glass.getConnectedBlockTexture(world, x, y, z, 0, false, meta);
-            
+
             halfU = left.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x, y, z, left.getMinU(), left.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y, z, halfU, left.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y, z + 1, halfU, left.getMinV());
             tessellator.addVertexWithUV(x, y, z + 1, left.getMinU(), left.getMinV());
-            
+
             halfU = right.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x + HALF, y, z, halfU, right.getMaxV());
             tessellator.addVertexWithUV(x + 1, y, z, right.getMaxU(), right.getMaxV());
             tessellator.addVertexWithUV(x + 1, y, z + 1, right.getMaxU(), right.getMinV());
             tessellator.addVertexWithUV(x + HALF, y, z + 1, halfU, right.getMinV());
         }
-        
+
         if (!connectionUp)
         {
             left = glass.getConnectedBlockTexture(world, x, y, z, 1, true, meta);
             right = glass.getConnectedBlockTexture(world, x, y, z, 1, false, meta);
-            
+
             halfU = left.getInterpolatedU(8.0D);
-            tessellator.addVertexWithUV(x, y + 1, z + 1, left.getMinU(), left.getMinV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z + 1, halfU, left.getMinV());
+            tessellator.addVertexWithUV(x + 1, y + 1, z + 1, left.getMinU(), left.getMinV());
+            tessellator.addVertexWithUV(x + 1, y + 1, z, left.getMinU(), left.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z, halfU, left.getMaxV());
-            tessellator.addVertexWithUV(x, y + 1, z, left.getMinU(), left.getMaxV());
-            
+
             halfU = right.getInterpolatedU(8.0D);
+            tessellator.addVertexWithUV(x, y + 1, z + 1, right.getMaxU(), right.getMinV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z + 1, halfU, right.getMinV());
-            tessellator.addVertexWithUV(x + 1, y + 1, z + 1, right.getMaxU(), right.getMinV());
-            tessellator.addVertexWithUV(x + 1, y + 1, z, right.getMaxU(), right.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z, halfU, right.getMaxV());
+            tessellator.addVertexWithUV(x, y + 1, z, right.getMaxU(), right.getMaxV());
         }
-        
+
         if (!connectionNorth)
         {
             left = glass.getConnectedBlockTexture(world, x, y, z, 2, true, meta);
             right = glass.getConnectedBlockTexture(world, x, y, z, 2, false, meta);
-            
+
             halfU = left.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x + HALF, y + 1, z, halfU, left.getMinV());
             tessellator.addVertexWithUV(x + 1, y + 1, z, left.getMinU(), left.getMinV());
             tessellator.addVertexWithUV(x + 1, y, z, left.getMinU(), left.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y, z, halfU, left.getMaxV());
-            
+
             halfU = right.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x, y + 1, z, right.getMaxU(), right.getMinV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z, halfU, right.getMinV());
             tessellator.addVertexWithUV(x + HALF, y, z, halfU, right.getMaxV());
             tessellator.addVertexWithUV(x, y, z, right.getMaxU(), right.getMaxV());
         }
-        
+
         if (!connectionSouth)
         {
             left = glass.getConnectedBlockTexture(world, x, y, z, 3, true, meta);
             right = glass.getConnectedBlockTexture(world, x, y, z, 3, false, meta);
-            
+
             halfU = left.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x, y, z + 1, left.getMinU(), left.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y, z + 1, halfU, left.getMaxV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z + 1, halfU, left.getMinV());
             tessellator.addVertexWithUV(x, y + 1, z + 1, left.getMinU(), left.getMinV());
-            
+
             halfU = right.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x + HALF, y, z + 1, halfU, right.getMaxV());
             tessellator.addVertexWithUV(x + 1, y, z + 1, right.getMaxU(), right.getMaxV());
             tessellator.addVertexWithUV(x + 1, y + 1, z + 1, right.getMaxU(), right.getMinV());
             tessellator.addVertexWithUV(x + HALF, y + 1, z + 1, halfU, right.getMinV());
         }
-        
+
         if (!connectionWest)
         {
             left = glass.getConnectedBlockTexture(world, x, y, z, 4, true, meta);
             right = glass.getConnectedBlockTexture(world, x, y, z, 4, false, meta);
-            
+
             halfU = left.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x, y + 1, z + HALF, halfU, left.getMinV());
             tessellator.addVertexWithUV(x, y + 1, z, left.getMinU(), left.getMinV());
             tessellator.addVertexWithUV(x, y, z, left.getMinU(), left.getMaxV());
             tessellator.addVertexWithUV(x, y, z + HALF, halfU, left.getMaxV());
-            
+
             halfU = right.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x, y + 1, z + 1, right.getMaxU(), right.getMinV());
             tessellator.addVertexWithUV(x, y + 1, z + HALF, halfU, right.getMinV());
             tessellator.addVertexWithUV(x, y, z + HALF, halfU, right.getMaxV());
             tessellator.addVertexWithUV(x, y, z + 1, right.getMaxU(), right.getMaxV());
         }
-        
+
         if (!connectionEast)
         {
             left = glass.getConnectedBlockTexture(world, x, y, z, 5, true, meta);
             right = glass.getConnectedBlockTexture(world, x, y, z, 5, false, meta);
-            
+
             halfU = left.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x + 1, y, z + 1, left.getMinU(), left.getMaxV());
             tessellator.addVertexWithUV(x + 1, y, z + HALF, halfU, left.getMaxV());
             tessellator.addVertexWithUV(x + 1, y + 1, z + HALF, halfU, left.getMinV());
             tessellator.addVertexWithUV(x + 1, y + 1, z + 1, left.getMinU(), left.getMinV());
-            
+
             halfU = right.getInterpolatedU(8.0D);
             tessellator.addVertexWithUV(x + 1, y, z + HALF, halfU, right.getMaxV());
             tessellator.addVertexWithUV(x + 1, y, z, right.getMaxU(), right.getMaxV());

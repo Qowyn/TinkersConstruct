@@ -24,7 +24,7 @@ public class GlassPaneStained extends GlassPaneConnected
     {
         super(location, hasAlpha);
         this.textures = textures;
-        this.icons = new IIcon[textures.length][10];
+        this.icons = new IIcon[textures.length][9];
         this.setHardness(0.3F);
         this.stepSound = soundTypeGlass;
         this.setBlockName("tconstruct.glasspanestained");
@@ -64,16 +64,16 @@ public class GlassPaneStained extends GlassPaneConnected
         }
     }
     
-    public IIcon getSideTextureIndex (int meta)
+    public IIcon getSideTexture (int meta)
     {
-        return this.icons[meta][9];
+        return this.icons[meta][8];
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon (int par1, int par2)
     {
-        return par1 > 3 ? icons[par2][0] : icons[par2][9];
+        return par1 > 3 ? icons[par2][0] : icons[par2][8];
     }
     
     @Override
@@ -85,12 +85,11 @@ public class GlassPaneStained extends GlassPaneConnected
             icons[i][1] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_u");
             icons[i][2] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_s");
             icons[i][3] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_d");
-            icons[i][4] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_os");
-            icons[i][5] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_ud");
-            icons[i][6] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_n");
-            icons[i][7] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_us");
-            icons[i][8] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_ds");
-            icons[i][9] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_side");
+            icons[i][4] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_ud");
+            icons[i][5] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_n");
+            icons[i][6] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_us");
+            icons[i][7] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_ds");
+            icons[i][8] = par1IconRegister.registerIcon("tinker:glass/" + folder + "/" + textures[i] + "/glass_side");
         }
     }
     
