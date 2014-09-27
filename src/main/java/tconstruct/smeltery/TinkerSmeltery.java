@@ -689,7 +689,7 @@ public class TinkerSmeltery
         TinkerSmeltery.glassPane = new GlassPaneConnected("clear", false);
         TinkerSmeltery.stainedGlassClear = new GlassBlockConnectedMeta("stained", true, "white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black").setBlockName("GlassBlock.StainedClear");
         TinkerSmeltery.stainedGlassClear.stepSound = Block.soundTypeGlass;
-        TinkerSmeltery.stainedGlassClearPane = new GlassPaneStained();
+        TinkerSmeltery.stainedGlassClearPane = new GlassPaneStained("stained", true, "white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black");
 
         GameRegistry.registerBlock(TinkerSmeltery.searedSlab, SearedSlabItem.class, "SearedSlab");
         GameRegistry.registerBlock(TinkerSmeltery.speedSlab, SpeedSlabItem.class, "SpeedSlab");

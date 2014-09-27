@@ -1,14 +1,16 @@
 package tconstruct.smeltery.blocks;
 
 import cpw.mods.fml.relauncher.*;
+
 import java.util.List;
+
 import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.*;
 import net.minecraft.util.IIcon;
-import tconstruct.smeltery.model.PaneRender;
+import tconstruct.smeltery.model.PaneConnectedRender;
 
 public class PaneBase extends BlockStainedGlassPane
 {
@@ -83,6 +85,6 @@ public class PaneBase extends BlockStainedGlassPane
     @Override
     public int getRenderType ()
     {
-        return PaneRender.model;
+        return PaneConnectedRender.model;
     }
 }

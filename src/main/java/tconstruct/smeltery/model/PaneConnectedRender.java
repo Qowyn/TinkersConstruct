@@ -1,5 +1,7 @@
 package tconstruct.smeltery.model;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -27,13 +29,45 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
     @Override
     public void renderInventoryBlock (Block block, int metadata, int modelID, RenderBlocks renderer)
     {
-
+Tessellator tessellator = Tessellator.instance;
+        
+        block.setBlockBoundsForItemRender();
+        renderer.setRenderBoundsFromBlock(block);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, metadata));
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, metadata));
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 2, metadata));
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 3, metadata));
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 4, metadata));
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, metadata));
+        tessellator.draw();
+        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 
     @Override
     public boolean renderWorldBlock (IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
         GlassPaneConnected pane = (GlassPaneConnected) block;
+        
+        int meta = world.getBlockMetadata(x, y, z);
 
         // Connection state
         boolean connectionDown = pane.canPaneConnectTo(world, x, y, z, DOWN);
@@ -53,7 +87,7 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
         boolean paneWest = pane.shouldConnectToBlock(world, x, y, z, world.getBlock(x - 1, y, z), world.getBlockMetadata(x - 1, y, z));
         boolean paneEast = pane.shouldConnectToBlock(world, x, y, z, world.getBlock(x + 1, y, z), world.getBlockMetadata(x + 1, y, z));
 
-        IIcon iconSide = pane.getSideTextureIndex();
+        IIcon iconSide = pane.getSideTextureIndex(meta);
 
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
@@ -81,8 +115,8 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
         {
             // North
 
-            IIcon northWest = pane.getConnectedPaneTexture(world, x, y, z, 2, false);
-            IIcon northEast = pane.getConnectedPaneTexture(world, x, y, z, 2, true);
+            IIcon northWest = pane.getConnectedPaneTexture(world, x, y, z, 2, false, meta);
+            IIcon northEast = pane.getConnectedPaneTexture(world, x, y, z, 2, true, meta);
 
             if (!noXZConnection && !connectionNorth)
             {
@@ -151,8 +185,8 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
 
             // South
 
-            IIcon southWest = pane.getConnectedPaneTexture(world, x, y, z, 3, true);
-            IIcon southEast = pane.getConnectedPaneTexture(world, x, y, z, 3, false);
+            IIcon southWest = pane.getConnectedPaneTexture(world, x, y, z, 3, true, meta);
+            IIcon southEast = pane.getConnectedPaneTexture(world, x, y, z, 3, false, meta);
 
             if (!noXZConnection && !connectionSouth)
             {
@@ -221,8 +255,8 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
         if (connectionNorth || connectionSouth || noXZConnection)
         {
             // West
-            IIcon westNorth = pane.getConnectedPaneTexture(world, x, y, z, 4, true);
-            IIcon westSouth = pane.getConnectedPaneTexture(world, x, y, z, 4, false);
+            IIcon westNorth = pane.getConnectedPaneTexture(world, x, y, z, 4, true, meta);
+            IIcon westSouth = pane.getConnectedPaneTexture(world, x, y, z, 4, false, meta);
 
             if (!noXZConnection && !connectionWest)
             {
@@ -288,8 +322,8 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
             }
 
             // East
-            IIcon eastNorth = pane.getConnectedPaneTexture(world, x, y, z, 5, false);
-            IIcon eastSouth = pane.getConnectedPaneTexture(world, x, y, z, 5, true);
+            IIcon eastNorth = pane.getConnectedPaneTexture(world, x, y, z, 5, false, meta);
+            IIcon eastSouth = pane.getConnectedPaneTexture(world, x, y, z, 5, true, meta);
 
             if (!noXZConnection && !connectionEast)
             {
@@ -652,7 +686,7 @@ public class PaneConnectedRender implements ISimpleBlockRenderingHandler
     @Override
     public boolean shouldRender3DInInventory (int modelID)
     {
-        return false;
+        return true;
     }
 
     @Override

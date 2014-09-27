@@ -41,7 +41,7 @@ public class SmelteryProxyClient extends SmelteryProxyCommon
         RenderingRegistry.registerBlockHandler(new TankAirRender());
         RenderingRegistry.registerBlockHandler(new CastingBlockRender());
         RenderingRegistry.registerBlockHandler(new DryingRackRender());
-        RenderingRegistry.registerBlockHandler(new PaneRender());
+        RenderingRegistry.registerBlockHandler(new GlassConnectedRenderer());
         RenderingRegistry.registerBlockHandler(new PaneConnectedRender());
         RenderingRegistry.registerBlockHandler(new RenderBlockFluid());
         RenderingRegistry.registerBlockHandler(new BlockRenderCastingChannel());
