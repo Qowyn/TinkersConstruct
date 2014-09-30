@@ -235,14 +235,14 @@ public class PartCrafterGui extends GuiContainer implements INEIGuiHandler
     @Override
     public VisiblityData modifyVisiblity (GuiContainer gui, VisiblityData currentVisibility)
     {
-        if (width - xSize < 107)
+        /*if (width - xSize < 107)
         {
             currentVisibility.showWidgets = false;
         }
         else
-        {
+        {*/
             currentVisibility.showWidgets = true;
-        }
+        //}
 
         if (guiLeft < 58)
         {
